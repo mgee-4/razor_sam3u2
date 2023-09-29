@@ -6,14 +6,19 @@ Container for the Cprimer "Server" application firmware.
 ***********************************************************************************************************************/
 
 #include "configuration.h"
+#include "main.h"
 
 #ifndef SOLUTION
 /***********************************************************************************************************************
 Global variable definitions with scope across entire project.
 All Global variable names shall start with "G_"
 ***********************************************************************************************************************/
-/* New variables */
+static u8 Main_u8Servers = 0;
+u8 u8FlagRegister = 0;
 
+#define _FLAG_ BUTTON_WAS_PRESSED       (u8)0x01
+#define _FLAG_ERROR                     (u8)0x02
+#define __FLAG_RESET_REQUEST            (u8)0x80
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* External global variables defined in other files (must indicate which file they are defined in) */
 
@@ -29,7 +34,9 @@ Main Program
 
 void main(void)
 {
-
+  u32 u32var;
+  u32 au32Barray[] = {5, 4, 3, 2, 1};
+  DrinkType aeDarray[3] = {BEER, SHOOTER};
   while(1)
   {
     
@@ -41,7 +48,8 @@ void main(void)
 /***********************************************************************************************************************
 * Function definitions
 ***********************************************************************************************************************/
-
+bool CreateServer(Server** psServerList_)
+bool RemoveServer(Server** psServerList_)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* End of File */
