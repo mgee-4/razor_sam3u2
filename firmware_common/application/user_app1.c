@@ -62,7 +62,6 @@ Variable names shall start with "UserApp1_<type>" and be declared as static.
 static fnCode_type UserApp1_pfStateMachine;               /*!< @brief The state machine function pointer */
 //static u32 UserApp1_u32Timeout;                           /*!< @brief Timeout counter used across states */
 
-
 /**********************************************************************************************************************
 Function Definitions
 **********************************************************************************************************************/
@@ -95,6 +94,7 @@ void UserApp1Initialize(void)
   /* If good initialization, set state to Idle */
   if( 1 )
   {
+    LedOn(LCD_BLUE);
     UserApp1_pfStateMachine = UserApp1SM_Idle;
   }
   else
@@ -124,6 +124,8 @@ Promises:
 void UserApp1RunActiveState(void)
 {
   UserApp1_pfStateMachine();
+  LedPWM(LCD_RED, LED_PWM_0);
+  
 
 } /* end UserApp1RunActiveState */
 
@@ -140,7 +142,26 @@ State Machine Function Definitions
 /* What does this state do? */
 static void UserApp1SM_Idle(void)
 {
-    
+  static int inc_count = 0, brightness = 0;
+  static LedRateType states[] = {LED_PWM_0, LED_PWM_5, LED_PWM_10, LED_PWM_15, LED_PWM_20, 
+              LED_PWM_25,  LED_PWM_30,  LED_PWM_35,  LED_PWM_40,  LED_PWM_45, 
+              LED_PWM_50, LED_PWM_55, LED_PWM_60, LED_PWM_65, LED_PWM_70, LED_PWM_75, 
+              LED_PWM_80, LED_PWM_85, LED_PWM_90, LED_PWM_95, LED_PWM_100};
+  static bool up_flag = TRUE;
+  inc_count++;
+  if (brightness == 20)
+    up_flag = FALSE;
+  if (brightness == 0)
+    up_flag = TRUE;
+  if (inc_count == 40){
+    inc_count = 0;
+    if (up_flag){
+      brightness++;
+    }
+    else
+       brightness--;
+    LedPWM(LCD_RED, states[brightness]);
+  }
 } /* end UserApp1SM_Idle() */
      
 
